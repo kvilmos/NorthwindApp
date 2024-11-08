@@ -43,6 +43,7 @@ namespace NorthwindApp.Server.Controllers
 
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /*
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
@@ -70,6 +71,44 @@ namespace NorthwindApp.Server.Controllers
             }
 
             return NoContent();
+        }*/
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCategory([FromBody] UpdateCategoryRequest request, int id)
+        {
+            var category = _context.Categories.SingleOrDefault(c => c.CategoryId == id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+            //_context.Entry(category).State = EntityState.Modified;
+
+
+            category.CategoryName = request.CategoryName;
+            category.Description = request.Description;
+            category.Picture = request.Picture;
+            _context.Update(category);
+            //_context.SaveChanges();
+
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CategoryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok();
         }
 
         // POST: api/Categories

@@ -68,27 +68,84 @@ thead th {
     position: sticky;
     top: 0;
     left: 0;
-    background-color: #575757;
+    background-color: #EEEEEE;
 }
 
 tr:nth-child(even) {
     background-color: #0002;
 }
 
-.action button {
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
+.action {
+    float: right;
+    width: 12rem;
+}
+
+    .action button {
+        float: right;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 1rem;
+        font-weight: bold;
+        padding: .32rem .8rem;
+        display: inline-flex;
+        align-items: center;
+        margin-right: .5rem;
+    }
+
+    .action button.delete {
+        background: linear-gradient(to right, #d893a3, #d893a3);
+    }
+
+    .action button.edit {
+        background: linear-gradient(to right, #6fcaea, #6fcaea);
+    }
+        .action button.add {
+            background: linear-gradient(to right, #B9E2A7, #B9E2A7);
+        }
+    .action img{
+        width: 16px;
+        height: 16px;
+    }
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
     display: inline-block;
-    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-.action button.delete {
-    background-color: #04AA6D;
+input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.action button.edit {
-    background-color: red;
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+
+
+Input {
+    Display: none;
 }
+
+Label {
+    Border-radius: 60px;
+    Border: 1px dashed #999;
+   padding: .25rem;
+}
+
+    Label:hover {
+        Color: #de0611;
+        Border: 1px dashed #de0611;
+    }

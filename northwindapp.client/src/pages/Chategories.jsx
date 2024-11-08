@@ -1,7 +1,12 @@
-import { Component, useEffect, useState } from 'react';
+﻿import { Component, useEffect, useState } from 'react';
 import '../css/Chategories.css'
 export default function Chategories() {
     const [categories, setCategories] = useState();
+
+    const [name, setName] = useState('');
+    const [image, setImage] = useState('');
+    const [description, setDescription] = useState('');
+
 
     useEffect(() => {
         populateChategoryData();
@@ -23,17 +28,33 @@ export default function Chategories() {
                             <th></th>
                             <th>Name</th> 
                             <th>Description</th>
-                            <th>Action</th>
-                        </tr>
+                            <th></th>
+
+                        </tr>   
                     </thead>
                     <tbody>
+                        <tr>
+                            <td>#</td>
+                            <td><input type="text" placeholder="Upload Image" value={image }></input></td>
+                            <td><input type="text" placeholder="Enter Name" value={name}></input></td>
+                            <td><input type="text" placeholder="Add Description" value={description}></input></td>
+                            <th className="action">
+                                <button onClick={() => { value.onAdd(category.categoryId) }} className="add"><img src="../public/edit.png" alt="logo" /></button>
+                            </th>
+                        </tr>
                         {categories.map(category =>
                             <tr key={category.categoryId}>
                                 <td>{category.categoryId}</td>
-                                <td><img src={`data:image/jpg;base64,${category.picture.substring(104)}`} /></td>
+                                <td>                                            <img
+                                    src={`data:image/jpeg;base64,${(category.picture).substring(104)}`}
+                                    alt="category"
+                                /></td>
                                 <td>{category.categoryName}</td>
                                 <td>{category.description}</td>
-                                <th className="action"><button className="edit">E</button><button className="delete">D</button></th>
+                                <th className="action">
+                                    <button onClick={() => { value.onEdit(category.categoryId) }} className="edit"><img src="../public/edit.png" alt="logo" /></button>
+                                    <button onClick={() => { value.onDelete(category.categoryId) }} className="delete"><img src="../public/delete.png" alt="logo" /></button>
+                                </th>
                             </tr>
                         )}
                     </tbody>
