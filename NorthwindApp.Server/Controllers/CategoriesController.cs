@@ -28,7 +28,7 @@ namespace NorthwindApp.Server.Controllers
         }
 
         // GET: api/Categories/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
@@ -41,47 +41,15 @@ namespace NorthwindApp.Server.Controllers
             return category;
         }
 
-        // PUT: api/Categories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        /*
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
-        {
-            if (id != category.CategoryId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(category).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }*/
-
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> PutCategory([FromBody] UpdateCategoryRequest request, int id)
         {
             var category = _context.Categories.SingleOrDefault(c => c.CategoryId == id);
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             if (category == null)
-            {
                 return NotFound();
-            }
             //_context.Entry(category).State = EntityState.Modified;
 
 
@@ -123,7 +91,7 @@ namespace NorthwindApp.Server.Controllers
         }
 
         // DELETE: api/Categories/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);

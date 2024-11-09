@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import '../css/Categories.css';
 
-export default function Produts() {
+export default function Categories() {
     const [categories, setCategories] = useState([]);
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
@@ -41,7 +41,7 @@ export default function Produts() {
         if (id <= 8) {
             return base64Data.substring(104);
         }
-        return base64Data; 
+        return base64Data;
     };
 
     //CREATE
@@ -96,7 +96,7 @@ export default function Produts() {
     const EditCategory = async () => {
         const newCategory = {
             categoryName: editName,
-            description:  editDescription,
+            description: editDescription,
             picture: editImage,
         };
 
@@ -201,15 +201,15 @@ export default function Produts() {
                                     {editId === category.categoryId ? (
                                         <div>
                                             <img className="uploadImg" src="../public/upload.png" alt="" id="edit-preview" />
-                                            <input type="file" accept="image/*" id="file-edit" onChange={(e) => handleImageUpload(e,true)} />
+                                            <input type="file" accept="image/*" id="file-edit" onChange={(e) => handleImageUpload(e, true)} />
                                             <label for="file-edit">UploadFile</label>
                                         </div>
 
                                     ) : (
-                                            <img
-                                                src={`data:image/jpeg;base64,${oldImagesConvertBase64(category.picture, category.categoryId)}`}
-                                                alt="category"
-                                            />
+                                        <img
+                                            src={`data:image/jpeg;base64,${oldImagesConvertBase64(category.picture, category.categoryId)}`}
+                                            alt="category"
+                                        />
                                     )}
                                 </td>
                                 <td>

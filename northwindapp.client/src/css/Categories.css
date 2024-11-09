@@ -24,6 +24,10 @@ td img {
     vertical-align: middle;
 }
 
+.uploadImg {
+    opacity: 0.5;
+}
+
 table {
     width: 100%;
 }
@@ -69,6 +73,7 @@ thead th {
     top: 0;
     left: 0;
     background-color: #EEEEEE;
+    z-index:1;
 }
 
 tr:nth-child(even) {
@@ -137,6 +142,14 @@ input[type=submit] {
 
 Input {
     Display: none;
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.25rem;
+    vertical-align: middle;
+    box-shadow: 0 0 0 transparent;
+    border: 1px solid #999;
+    outline: 0 none;
+    transition: box-shadow 0.5s;
 }
 
 Label {
@@ -149,3 +162,30 @@ Label {
         Color: #de0611;
         Border: 1px dashed #de0611;
     }
+
+.Error {
+    animation: shake 0.2s ease-in-out 0s 2;
+    position:relative;
+}
+.Error::placeholder {
+    color: red;
+    opacity: 1; /* Firefox */
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(0.5rem);
+    }
+
+    75% {
+        transform: translateX(-0.5rem);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}

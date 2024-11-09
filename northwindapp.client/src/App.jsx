@@ -1,7 +1,7 @@
 import './App.css'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
-import Chategories from './pages/Chategories'
+import Categories from './pages/Categories'
 import Products from './pages/Products'
 import {Route, Routes} from "react-router-dom"
 function App() {
@@ -11,8 +11,7 @@ function App() {
             <div className="container">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/chategories" element={<Chategories />} />
-                    <Route path="/products" element={<Products />} />
+                    <Route path="/categories" element={<Categories />} />
                 </Routes>
             </div>
         </>
