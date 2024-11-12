@@ -6,7 +6,7 @@ export default function Navbar() {
 
     return (
         <nav className="nav">
-            <Link to="/" className="logo"><img src="../public/nwlogo.png" alt="logo" /></Link>
+            <Link to="/" className="logo"><img src="/nwlogo.png" alt="logo" /></Link>
 
             <ul>
                 <CustomLink to="/">Home</CustomLink>

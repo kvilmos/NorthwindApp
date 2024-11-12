@@ -138,14 +138,14 @@ export default function Categories() {
         setName('');
         setImage('');
         setDescription('');
-        imagePreview.src = "../public/upload.png";
+        imagePreview.src = "/upload.png";
         document.getElementById("name").className = "";
         setEditName('');
         setEditImage('');
         setEditDescription('');
     };
 
-    const contents2 = categories.length === 0
+    const contents = categories.length === 0
         ? <p>Error</p>
         :
         <main className="table">
@@ -167,7 +167,7 @@ export default function Categories() {
                         <tr>
                             <td>#</td>
                             <td>
-                                <img className="uploadImg" src="../public/upload.png" alt="" id="file-preview" />
+                                <img className="uploadImg" src="/upload.png" alt="" id="file-preview" />
                                 <input type="file" accept="image/*" id="file-upload" onChange={(e) => handleImageUpload(e, false)} />
                                 <label for="file-upload">UploadFile</label>
                             </td>
@@ -190,7 +190,7 @@ export default function Categories() {
                             </td>
                             <td className="action">
                                 <button onClick={handleAddCategory} className="add">
-                                    <img src="../public/edit.png" alt="edit-icon" />
+                                    <img src="/edit.png" alt="edit-icon" />
                                 </button>
                             </td>
                         </tr>
@@ -200,7 +200,7 @@ export default function Categories() {
                                 <td>
                                     {editId === category.categoryId ? (
                                         <div>
-                                            <img className="uploadImg" src="../public/upload.png" alt="" id="edit-preview" />
+                                            <img className="uploadImg" src="/upload.png" alt="" id="edit-preview" />
                                             <input type="file" accept="image/*" id="file-edit" onChange={(e) => handleImageUpload(e, true)} />
                                             <label for="file-edit">UploadFile</label>
                                         </div>
@@ -249,10 +249,10 @@ export default function Categories() {
                                     ) : (
                                         <>
                                             <button onClick={() => handleEditCategory(category)} className="edit">
-                                                <img src="../public/edit.png" alt="edit-icon" />
+                                                <img src="/edit.png" alt="edit-icon" />
                                             </button>
                                             <button onClick={() => handleDeleteCategory(category.categoryId)} className="delete">
-                                                <img src="../public/delete.png" alt="delete-icon" />
+                                                <img src="/delete.png" alt="delete-icon" />
                                             </button>
                                         </>
                                     )}
@@ -268,7 +268,7 @@ export default function Categories() {
         <div>
             <h1 id="tabelLabel">Category List</h1>
             <p>This component demonstrates categories data from the server.</p>
-            {contents2}
+            {contents}
         </div>
     );
 
