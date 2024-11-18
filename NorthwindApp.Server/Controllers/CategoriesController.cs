@@ -55,9 +55,7 @@ namespace NorthwindApp.Server.Controllers
 
             category.CategoryName = request.CategoryName;
             category.Description = request.Description;
-            category.Picture = request.Picture;
             _context.Update(category);
-            //_context.SaveChanges();
 
 
             try

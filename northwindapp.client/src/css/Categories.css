@@ -2,8 +2,6 @@
     margin: 0;
 }
 
-
-
 main.table {
     width: 82vw;
     height: 90vh;
@@ -82,7 +80,6 @@ tr:nth-child(even) {
 
 .action {
     float: right;
-    width: 12rem;
 }
 
     .action button {
@@ -105,10 +102,13 @@ tr:nth-child(even) {
     .action button.edit {
         background: linear-gradient(to right, #6fcaea, #6fcaea);
     }
-        .action button.add {
-            background: linear-gradient(to right, #B9E2A7, #B9E2A7);
-        }
+    .action button.add {
+        background: linear-gradient(to right, #B9E2A7, #B9E2A7);
+    }
+
     .action img{
+        margin-left: auto;
+        margin-right: auto;
         width: 16px;
         height: 16px;
     }
@@ -166,6 +166,7 @@ Label {
 .Error {
     animation: shake 0.2s ease-in-out 0s 2;
     position:relative;
+    color:red;
 }
 .Error::placeholder {
     color: red;
@@ -188,4 +189,13 @@ Label {
     100% {
         transform: translateX(0);
     }
+}
+
+#createerror {
+    color: #d893a3;
+    width: 14rem;
+}
+#editerror {
+    color: #d893a3;
+    width: 14rem;
 }

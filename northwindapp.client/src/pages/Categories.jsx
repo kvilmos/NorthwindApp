@@ -4,59 +4,51 @@ import '../css/Categories.css';
 export default function Categories() {
     const [categories, setCategories] = useState([]);
     const [name, setName] = useState('');
-    const [image, setImage] = useState('');
     const [description, setDescription] = useState('');
     const [editId, setEditId] = useState(null);
     const [editName, setEditName] = useState('');
-    const [editImage, setEditImage] = useState('');
     const [editDescription, setEditDescription] = useState('');
 
     useEffect(() => {
         populateChategoryData();
     }, []);
 
-    const imagePreview = document.getElementById("file-preview")
-    const EditPreview = document.getElementById("edit-preview")
-
-
-    const handleImageUpload = (e, isEdit) => {
-        const file = e.target.files[0];
-        const imageURL = URL.createObjectURL(file)
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            const base64String = reader.result.split(',')[1];
-            if (isEdit) {
-                setEditImage(base64String);
-                EditPreview.src = imageURL;
-            } else {
-                setImage(base64String);
-                imagePreview.src = imageURL;
-            }
-        };
-    };
-
-
-    const oldImagesConvertBase64 = (base64Data, id) => {
-        if (id <= 8) {
-            return base64Data.substring(104);
-        }
-        return base64Data;
-    };
-
     //CREATE
     const handleAddCategory = async () => {
         const newCategory = {
             categoryName: name,
             description: description,
-            picture: image,
         };
+        document.getElementById("createerror").innerHTML = "";
+        document.getElementById("name").className = "";
+        document.getElementById("description").className = "";
 
-        var re = /^[a-zA-Z]+$/;
-        if (newCategory.categoryName.length == 0 || !re.test(newCategory.categoryName) || newCategory.categoryName.length > 40) {
-            document.getElementById("name").className = "Error";
-            return ("");
+        var errorText = "";
+
+        var re = /^[a-zA-Z''-'\s]{1,40}$/;
+        if (newCategory.categoryName == "") {
+            errorText += "Field is required! <br>";
         }
+        else if (newCategory.categoryName.length > 40) {
+            errorText += "Name cannot be over 40 characters!<br>"
+        }
+        else if (!re.test(newCategory.categoryName)) {
+            errorText += "Characters are not allowed!<br>";
+        }
+        if (newCategory.description.length > 100) {
+            errorText += "Description cannot be over 100 characters!<br>"
+        }
+        if (newCategory.description.length > 100) {
+            errorText += "Description cannot be over 100 characters!<br>"
+            document.getElementById("description").className = "Error";
+        }
+        if (errorText.length > 0) {
+            document.getElementById("createerror").innerHTML = errorText;
+            document.getElementById("name").className = "Error";
+            return;
+        }
+
+
         try {
             const response = await fetch(`api/Categories/`, {
                 method: 'POST',
@@ -66,11 +58,24 @@ export default function Categories() {
             if (response.ok) {
                 await populateChategoryData();
                 resetForm();
+                document.getElementById("createerror").innerHTML = "";
+            } else {
+                const errorResponse = await response.json(); 
+                if (errorResponse.errors) {
+                    const errors = Object.entries(errorResponse.errors) // Object.entries az errors mezőhöz
+                        .map(([field, messages]) => `${messages.join("<br>")}`) // Mezők és üzenetek
+                        .join("<br>"); // Újsorral elválasztott hibalista
+
+                    document.getElementById("createerror").innerHTML = `Hiba: ${response.status}<br>${errors}`;
+                } else {
+                    document.getElementById("createerror").innerHTML = `Hiba: ${response.status} - ${errorResponse.title}`;
+                }
             }
         } catch (error) {
             console.error("Error:", error);
         }
     };
+
     //READ
     async function populateChategoryData() {
         try {
@@ -89,7 +94,6 @@ export default function Categories() {
     const handleEditCategory = (category) => {
         setEditId(category.categoryId);
         setEditName(category.categoryName);
-        setEditImage(category.picture);
         setEditDescription(category.description);
     };
 
@@ -97,14 +101,31 @@ export default function Categories() {
         const newCategory = {
             categoryName: editName,
             description: editDescription,
-            picture: editImage,
         };
 
-        var re = /^[a-zA-Z]+$/;
-        if (newCategory.categoryName.length == 0 || !re.test(newCategory.categoryName) || newCategory.categoryName.length > 40) {
-            document.getElementById("editname").className = "Error";
-            return ("");
+        document.getElementById("editerror").innerHTML = "";
+        var errorText = "";
+
+        var re = /^[a-zA-Z''-'\s]{1,40}$/;
+        if (newCategory.categoryName == "") {
+            errorText += "Field is required! <br>";
         }
+        else if (newCategory.categoryName.length > 40) {
+            errorText += "Name cannot be over 40 characters!<br>"
+        }
+        else if (!re.test(newCategory.categoryName)) {
+            errorText += "Characters are not allowed!<br>";
+        }
+        if (newCategory.description.length > 100) {
+            errorText += "Description cannot be over 100 characters!<br>"
+            document.getElementById("editdescription").className = "Error";
+        }
+        if (errorText.length > 0) {
+            document.getElementById("editerror").innerHTML = errorText;
+            document.getElementById("editname").className = "Error";
+            return;
+        }
+
         try {
             const response = await fetch(`api/Categories/${editId}`, {
                 method: 'PUT',
@@ -114,6 +135,18 @@ export default function Categories() {
             if (response.ok) {
                 await populateChategoryData();
                 resetForm();
+                document.getElementById("editerror").innerHTML = "";
+            } else {
+                const errorResponse = await response.json();
+                if (errorResponse.errors) {
+                    const errors = Object.entries(errorResponse.errors) // Object.entries az errors mezőhöz
+                        .map(([field, messages]) => `${messages.join(", ")}`) // Mezők és üzenetek
+                        .join("<br>"); // Újsorral elválasztott hibalista
+
+                    document.getElementById("editerror").innerHTML = `Hiba: ${response.status}<br>${errors}`;
+                } else {
+                    document.getElementById("editerror").innerHTML = `Hiba: ${response.status} - ${errorResponse.title}`;
+                }
             }
         } catch (error) {
             console.error("Error:", error);
@@ -136,18 +169,18 @@ export default function Categories() {
     const resetForm = () => {
         setEditId(null);
         setName('');
-        setImage('');
         setDescription('');
-        imagePreview.src = "/upload.png";
         document.getElementById("name").className = "";
+        document.getElementById("editname").className = "";
+        document.getElementById("editdescription").className = "";
         setEditName('');
-        setEditImage('');
         setEditDescription('');
     };
 
     const contents = categories.length === 0
         ? <p>Error</p>
         :
+        
         <main className="table">
             <section className="table__head">
                 <h1>Categoriy - List:</h1>
@@ -157,9 +190,9 @@ export default function Categories() {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th></th>
                             <th>Name</th>
                             <th>Description</th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -167,51 +200,31 @@ export default function Categories() {
                         <tr>
                             <td>#</td>
                             <td>
-                                <img className="uploadImg" src="/upload.png" alt="" id="file-preview" />
-                                <input type="file" accept="image/*" id="file-upload" onChange={(e) => handleImageUpload(e, false)} />
-                                <label for="file-upload">UploadFile</label>
-                            </td>
-                            <td>
                                 <input
                                     type="text"
-                                    placeholder="Enter Name*"
                                     id="name"
                                     value={name}
+                                    placeholder="Enter Name*"
                                     onChange={(e) => setName(e.target.value)}
                                 />
                             </td>
                             <td>
                                 <input
                                     type="text"
+                                    id="description"
                                     placeholder="Add Description"
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
                             </td>
+                            <td id="createerror"></td>
                             <td className="action">
-                                <button onClick={handleAddCategory} className="add">
-                                    <img src="/edit.png" alt="edit-icon" />
-                                </button>
+                                <button onClick={handleAddCategory} className="add"><img src="/edit.png" alt="add-icon" /></button>
                             </td>
                         </tr>
                         {categories.map(category => (
                             <tr key={category.categoryId}>
                                 <td>{category.categoryId}</td>
-                                <td>
-                                    {editId === category.categoryId ? (
-                                        <div>
-                                            <img className="uploadImg" src="/upload.png" alt="" id="edit-preview" />
-                                            <input type="file" accept="image/*" id="file-edit" onChange={(e) => handleImageUpload(e, true)} />
-                                            <label for="file-edit">UploadFile</label>
-                                        </div>
-
-                                    ) : (
-                                        <img
-                                            src={`data:image/jpeg;base64,${oldImagesConvertBase64(category.picture, category.categoryId)}`}
-                                            alt="category"
-                                        />
-                                    )}
-                                </td>
                                 <td>
                                     {editId === category.categoryId ? (
                                         <input
@@ -225,9 +238,11 @@ export default function Categories() {
                                         category.categoryName
                                     )}
                                 </td>
+
                                 <td>
                                     {editId === category.categoryId ? (
                                         <input
+                                            id="editdescription"
                                             type="text"
                                             value={editDescription}
                                             onChange={(e) => setEditDescription(e.target.value)}
@@ -236,6 +251,14 @@ export default function Categories() {
                                         category.description
                                     )}
                                 </td>
+                                <td>
+                                    {editId === category.categoryId ? (
+                                        <div id="editerror"></div>
+                                    ) : (
+                                        ""
+                                    )}
+                                </td>
+
                                 <td className="action">
                                     {editId === category.categoryId ? (
                                         <>

@@ -10,7 +10,7 @@ export default function Navbar() {
 
             <ul>
                 <CustomLink to="/">Home</CustomLink>
-                <CustomLink to="/categories">Chategories</CustomLink>
+                <CustomLink to="/categories">Categories</CustomLink>
             </ul>
         </nav>
     );
